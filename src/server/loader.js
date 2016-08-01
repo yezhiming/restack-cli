@@ -15,4 +15,4 @@ nodemon.on('start', function () {
 });
 
 // express server instance with webpack-dev-middleware & webpack-hot-middleware
-// require('./webpack-server');
+require('./webpack-server');

@@ -1,3 +1,21 @@
+var program = require('commander');
+
+// Current working directory, default to process.cwd()
+var cwd = process.cwd();
+
+program
+  .version('0.0.1')
+  .option('-p, --production', 'Production mode')
+  .arguments('<project>')
+  .action(function(project){
+    // change cwd if argument provided
+    cwd = project
+  })
+  .parse(process.argv);
+
+// load project config
+var project = require(`${cwd}/project`)
+
 var express = require('express');
 
 // init express instance
@@ -7,7 +25,7 @@ var app = new express();
 var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
-var config = require('../webpack/webpack.dev.config');
+var config = require('../webpack/webpack.dev.config')(cwd, project);
 
 // ref: http://webpack.github.io/docs/webpack-dev-server.html#combining-with-an-existing-server
 
