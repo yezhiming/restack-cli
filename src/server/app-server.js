@@ -1,19 +1,25 @@
-// 用nodemon启动node进程
-// 启动webpack进程
+require('babel-core/register');
+require('babel-polyfill');
 
-import program      from 'commander';
-import nodemon      from 'nodemon';
-import express      from 'express';
-import cookieParser from 'cookie-parser';
+var program = require('commander');
+var nodemon = require('nodemon');
+var express = require('express');
+var cookieParser = require('cookie-parser');
 
+// Current working directory, default to process.cwd()
 var cwd = process.cwd();
-console.log(`Current directory: ${cwd}`);
 
 program
   .version('0.0.1')
   .option('-p, --production', 'Production mode')
+  .arguments('<project>')
+  .action(function(project){
+    // change cwd if argument provided
+    cwd = project
+  })
   .parse(process.argv);
 
+console.log(`Project directory: ${cwd}, mode: ${program.production ? 'production': 'development'}`);
 
 var server = new express();
 
@@ -22,15 +28,11 @@ server.use(cookieParser());
 if (process.env.NODE_ENV == 'production' || program.production) {
   // production mode
   server.use('/', express.static(`${cwd}/static-dist`));
-  console.log('p')
 } else {
   // dev mode
 }
 
-
-// require('./app')(server)
-
-
+require('./app')(server)
 
 
 // default port 3000
