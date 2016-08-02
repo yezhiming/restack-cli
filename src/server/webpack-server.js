@@ -31,7 +31,7 @@ var config = require('../webpack/webpack.dev.config')(cwd, project);
 
 var compiler = webpack(config);
 app.use(webpackDevMiddleware(compiler, {
-  noInfo: false,
+  noInfo: true,
   publicPath: "/",
   stats: { colors: true }
 }));
