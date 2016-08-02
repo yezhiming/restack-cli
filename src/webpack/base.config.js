@@ -36,14 +36,12 @@ const config = {
       {test: /\.ttf(\?\w+)?/, loader: 'url?limit=5000&mimetype=application/octet-stream'},
       {test: /\.svg(\?\w+)?/, loader: 'url?limit=5000&mimetype=image/svg+xml'},
       {test: /\.(png|jpg|gif)$/, loader: 'url?limit=25000'}
-    ],
-    noParse: [/moment-with-locales/]
+    ]
   },
   resolve: {
     modulesDirectories: ['node_modules', 'bower_components'],
     extensions: ['', '.js', '.jsx'],
     alias: {
-      "moment": __dirname + '/../node_modules/moment/min/moment-with-locales.min'
     }
   },
   externals:{
