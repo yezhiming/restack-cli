@@ -13,6 +13,8 @@ program
   })
   .parse(process.argv);
 
+console.log(`[RWS]: Project directory: ${cwd}, mode: ${program.production ? 'production': 'development'}`);
+
 // load project config
 var project = require(`${cwd}/project`)
 

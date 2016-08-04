@@ -11,7 +11,58 @@ import ReactDOM                   from 'react-dom/server';
 import { Provider }               from 'react-redux';
 import { RouterContext, match }   from 'react-router';
 
-module.exports = function(server){
+import {i18n, configureStore}     from 'restack-core'
+
+// css modules require hook
+var hook = require("css-modules-require-hook")
+const lessParser = require('postcss-less').parse;
+hook({
+  extensions: ['.less','.css'],
+  processorOpts: {parser: lessParser},
+});
+
+
+function loadI18nToolsRegistry(cwd) {
+  var i18nToolsRegistry =
+  fs.readdirSync(`${cwd}/static/lang`)
+  .reduce((all, each) => {
+    var lang = each.replace('.json', '')
+    all[lang] = new i18n.Tools({ localeData: require(`${cwd}/static/lang/${each}`), locale: lang })
+    return all
+  }, {})
+
+  return i18nToolsRegistry;
+}
+
+function loadReducers(cwd) {
+  var reducers = traverse.listSync(`${cwd}/src/js/reducers`)
+  .filter(each => {
+    return each.endsWith('.js')
+  })
+  .map(each => {
+    return require(each).default
+  })
+  .reduce((all, each) => {
+    return {...each, ...all}
+  })
+
+  return reducers;
+}
+
+/*
+ * restack app server rendering
+ *
+ * @param server express instance
+ * @param cwd project folder path
+ */
+module.exports = function(server, cwd) {
+
+  server.use('/lang', express.static(`${cwd}/static/lang`))
+
+  const routes = require(`${cwd}/src/js/routes`).default
+  const reducers = loadReducers(cwd)
+  const i18nToolsRegistry = loadI18nToolsRegistry(cwd)
+  const project = require(`${cwd}/project`)
 
   server.use((req, res) => {
 
@@ -39,7 +90,7 @@ module.exports = function(server){
         );
 
         // render
-        const html = require('./renderHTML_index').default({
+        const html = require('./renderHTML').default({
           componentHTML,
           config: project,
           staticNames: ["vendors","index"]

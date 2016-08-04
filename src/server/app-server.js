@@ -19,7 +19,7 @@ program
   })
   .parse(process.argv);
 
-console.log(`Project directory: ${cwd}, mode: ${program.production ? 'production': 'development'}`);
+console.log(`[RAS]: Project directory: ${cwd}, mode: ${program.production ? 'production': 'development'}`);
 
 var server = new express();
 
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV == 'production' || program.production) {
   // dev mode
 }
 
-require('./app')(server)
+require('./app')(server, cwd)
 
 
 // default port 3000
