@@ -22,23 +22,14 @@ export default function renderHTML({ componentHTML, initialState, metaData, conf
 
     ${staticConfig.csses}
 
-    <script type="application/javascript">
-      if(!sessionStorage.getItem('token') && window.location.pathname != '/login'){
-        window.location.href = '/login'
-      }
-    </script>
   </head>
   <style media="screen">
     body{ background: #ecf0f5; }
     .skin-blue .wrapper{ background: #ecf0f5; }
 
-html, body {
-  height: 100%;
-}
-
-
-
-
+    html, body {
+      height: 100%;
+    }
   </style>
   <body class="skin-blue sidebar-mini" style="margin: 0;">
     <div id="react-view" class="wrapper">${componentHTML}</div>
