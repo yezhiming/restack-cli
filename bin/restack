@@ -6,4 +6,5 @@ program
   .version(require('../package.json').version)
   .command('run', 'run a restack application')
   .command('build', 'builds a restack application')
+  .command('po2json', 'convert .po files in lang/ into .json files in static/lang')
   .parse(process.argv)

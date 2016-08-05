@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var po2json = require('po2json');
+var fs = require('fs');
+
+
+// Current working directory, default to process.cwd()
+var cwd = process.cwd();
+
+program
+  .option('-d, --debug', 'output extra information for debugging')
+  .option('-e, --env [env]', 'specify an environment', 'development')
+  .action(function(project){
+    // change cwd if argument provided
+    cwd = project
+  })
+  .parse(process.argv);
+
+// convert files
+var languages = require(`${cwd}/project`).languages;
+
+console.log(`languages: ${languages.join(',')}`)
+
+languages.forEach(function(lang){
+  // parse to json object
+  var json = po2json.parseFileSync(`${cwd}/lang/${lang}.po`, { format: 'jed', stringify: true, pretty: true });
+  // write file
+  fs.createWriteStream(`${cwd}/static/lang/${lang}.json`).write(json);
+})
