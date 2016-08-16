@@ -4,7 +4,10 @@ var program = require('commander');
 
 program
   .version(require('../package.json').version)
-  .command('run', 'run a restack application')
+  .command('run', 'run integrated restack application')
+  .command('app-server', 'run app server only')
+  .command('webpack-server', 'run webpack server only')
   .command('build', 'builds a restack application')
+  .command('xgettext', 'Extract translatable strings from project')
   .command('po2json', 'convert .po files in lang/ into .json files in static/lang')
   .parse(process.argv)

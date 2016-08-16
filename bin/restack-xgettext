@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+var fs =require('fs');
+var path = require('path');
+var traverse = require('fs-tree-traverse');
+var program = require('./program');
+const cwd = program.cwd;
+var rimraf = require('rimraf');
+const execSync = require('child_process').execSync;
+
+// compile sources
+console.log(`compile sources...`)
+execSync(`node ${__dirname}/../node_modules/babel-cli/bin/babel ${cwd}/src -d ${cwd}/src_es5`)
+
+// find all .js files in compiled sources
+var files = traverse.listSync(path.resolve(cwd, 'src_es5')).filter(function(each){
+  return each.endsWith('.js')
+})
+
+// write file list
+console.log(`create file list...`)
+var fd = fs.openSync( path.resolve(cwd, 'xgettext-list'), 'w' )
+fs.writeSync( fd, files.join('\n') )
+fs.closeSync( fd )
+
+// extract translation script
+console.log(`extract translation script...`)
+execSync(`
+  xgettext --keyword="l:1" \
+  --keyword="l:1,2c" \
+  --keyword="nl:1,2" \
+  --keyword="nl:1,2,4c" \
+  --files-from="${cwd}/xgettext-list" \
+  --language=JavaScript \
+  --no-location \
+  --from-code=UTF-8 \
+  --output="${cwd}/lang/messages.pot"
+`)
+
+var languages = require(`${cwd}/project`).languages;
+console.log(`languages: ${languages.join(',')}`)
+
+languages.forEach(function(lang){
+  // make sure po file exists
+  execSync(`touch ${cwd}/lang/${lang}.po`)
+  // merge
+  execSync(`msgmerge --backup=off -U "${cwd}/lang/${lang}.po" "${cwd}/lang/messages.pot"`)
+})
+
+// clean up
+console.log(`clean up...`)
+rimraf.sync( path.resolve(cwd, 'src_es5') )
+rimraf.sync( path.resolve(cwd, 'xgettext-list') )
