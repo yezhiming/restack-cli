@@ -1,38 +1,24 @@
 require('babel-core/register');
 require('babel-polyfill');
 
-var program = require('commander');
-var nodemon = require('nodemon');
+var program = require('./program');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 
-// Current working directory, default to process.cwd()
-var cwd = process.cwd();
-
-program
-  .version('0.0.1')
-  .option('-p, --production', 'Production mode')
-  .arguments('<project>')
-  .action(function(project){
-    // change cwd if argument provided
-    cwd = project
-  })
-  .parse(process.argv);
-
-console.log(`[RAS]: Project directory: ${cwd}, mode: ${program.production ? 'production': 'development'}`);
+console.log(`[RAS]: Project directory: ${program.cwd}, mode: ${program.env}`);
 
 var server = new express();
 
 server.use(cookieParser());
 
-if (process.env.NODE_ENV == 'production' || program.production) {
+if (process.env.NODE_ENV == 'production' || program.env == 'production') {
   // production mode
   server.use('/', express.static(`${cwd}/static-dist`));
 } else {
   // dev mode
 }
 
-require('./app')(server, cwd)
+require('./app')(server, program.cwd)
 
 
 // default port 3000
