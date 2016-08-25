@@ -1,3 +1,4 @@
+var path =require('path');
 var program = require('commander');
 
 // Current working directory, default to process.cwd()
@@ -12,6 +13,6 @@ program
   })
   .parse(process.argv);
 
-program.cwd = cwd;
+program.cwd = path.resolve(cwd);
 
 module.exports = program;
