@@ -23,15 +23,20 @@ hook({
 
 
 function loadI18nToolsRegistry(cwd) {
-  var i18nToolsRegistry =
-  fs.readdirSync(`${cwd}/static/lang`)
-  .reduce((all, each) => {
-    var lang = each.replace('.json', '')
-    all[lang] = new i18n.Tools({ localeData: require(`${cwd}/static/lang/${each}`), locale: lang })
-    return all
-  }, {})
 
-  return i18nToolsRegistry;
+  try {
+    return fs.readdirSync(`${cwd}/static/lang`)
+    .reduce((all, each) => {
+      var lang = each.replace('.json', '')
+      all[lang] = new i18n.Tools({ localeData: require(`${cwd}/static/lang/${each}`), locale: lang })
+      return all
+    }, {})
+  } catch(e) {
+    return {
+      "zh-cn": {}
+    }
+  }
+
 }
 
 function loadReducers(cwd) {
@@ -44,7 +49,7 @@ function loadReducers(cwd) {
   })
   .reduce((all, each) => {
     return {...each, ...all}
-  })
+  }, {})
 
   return reducers;
 }
@@ -62,7 +67,7 @@ module.exports = function(server, cwd) {
   const routes = require(`${cwd}/src/js/routes`).default
   const reducers = loadReducers(cwd)
   const i18nToolsRegistry = loadI18nToolsRegistry(cwd)
-  const project = require(`${cwd}/project`)
+  const config = require(`${cwd}/config/development`)
 
   server.use((req, res) => {
 
@@ -92,8 +97,8 @@ module.exports = function(server, cwd) {
         // render
         const html = require('./renderHTML').default({
           componentHTML,
-          config: project,
-          staticNames: ["vendors","index"]
+          config,
+          staticNames: ["vendors", "index"]
         })
         res.type('html')
         res.end(html)
