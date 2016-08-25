@@ -38,9 +38,6 @@ export default function renderHTML({ componentHTML, initialState, metaData, conf
       window.__CONFIG__ = ${JSON.stringify(config)};
       window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
     </script>
-    <script src="/script/jszip.js"></script>
-    <script src="/script/filesaver.js"></script>
-    <script src="/script/xlsx.min.js"></script>
 
     ${bundle}
 
