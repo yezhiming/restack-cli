@@ -1,15 +1,10 @@
 import { detectIsIOSDevice }  from './utils'
 import _                      from 'lodash'
 
-export default function renderHTML({ componentHTML, initialState, metaData, config, staticNames }) {
+export default function renderHTML({ componentHTML, initialState, metaData, config}) {
 
-  const staticConfig = staticNames.reduce(function(all,each){
-    const cssTag = all.csses + `\n <link rel="stylesheet" href="${config.staticUrl}/${each}.css">`
-    const jsTag = all.jses + `\n <script src="${config.staticUrl}/${each}.js"></script>`
-    return {csses: cssTag,jses: jsTag }
-  },{csses:"", jses:""});
-
-  const bundle = config.staticUrl == "" ? "" : '<script src="/vendors.bundle.js"></script>';
+  const style_tags = config.styles.map( each => `<link rel="stylesheet" href="${config.staticUrl}/${each}.css">`)
+  const script_tags = config.scripts.map( each => `<script src="${config.staticUrl}/${each}.js"></script>`)
 
   return `
   <!DOCTYPE html>
@@ -20,7 +15,7 @@ export default function renderHTML({ componentHTML, initialState, metaData, conf
     <meta content="width=device-width, height=device-height,initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>${config.title}</title>
 
-    ${staticConfig.csses}
+    ${style_tags.join('\n')}
 
   </head>
   <style media="screen">
@@ -32,6 +27,7 @@ export default function renderHTML({ componentHTML, initialState, metaData, conf
     }
   </style>
   <body class="skin-blue sidebar-mini" style="margin: 0;">
+  
     <div id="react-view" class="wrapper">${componentHTML}</div>
 
     <script type="application/javascript">
@@ -39,9 +35,7 @@ export default function renderHTML({ componentHTML, initialState, metaData, conf
       window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
     </script>
 
-    ${bundle}
-
-    ${staticConfig.jses}
+    ${script_tags.join('\n')}
 
   </body>
 

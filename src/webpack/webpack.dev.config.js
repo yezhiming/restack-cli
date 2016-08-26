@@ -29,10 +29,10 @@ module.exports = function(cwd, project) {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.DllReferencePlugin({
-        context: '.',
-        manifest: require(`${cwd}/static-dist/vendors-manifest.json`),
-      })
+      // new webpack.DllReferencePlugin({
+      //   context: '.',
+      //   manifest: require(`${cwd}/static-dist/vendors-manifest.json`),
+      // })
     ]
   })
 }

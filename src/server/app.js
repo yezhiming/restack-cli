@@ -97,8 +97,7 @@ module.exports = function(server, cwd) {
         // render
         const html = require('./renderHTML').default({
           componentHTML,
-          config,
-          staticNames: ["vendors", "index"]
+          config
         })
         res.type('html')
         res.end(html)
