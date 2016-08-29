@@ -86,13 +86,13 @@ module.exports = function(server, cwd) {
         const store = configureStore(reducers);
         const i18nTools = i18nToolsRegistry['zh-cn'];
 
-        const componentHTML = ReactDOM.renderToString(
+        const componentHTML = config.isomorphic ? ReactDOM.renderToString(
           <Provider store={store}>
             <i18n.Provider i18n={i18nTools}>
               <RouterContext {...renderProps}/>
             </i18n.Provider>
           </Provider>
-        );
+        ) : "";
 
         // render
         const html = require('./renderHTML').default({

@@ -27,7 +27,7 @@ export default function renderHTML({ componentHTML, initialState, metaData, conf
     }
   </style>
   <body class="skin-blue sidebar-mini" style="margin: 0;">
-  
+
     <div id="react-view" class="wrapper">${componentHTML}</div>
 
     <script type="application/javascript">
