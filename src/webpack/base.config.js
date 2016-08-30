@@ -9,12 +9,11 @@ var HappyPack = require('happypack');
 
 const config = {
   entry: {
-    // vendors: [
-    //   'jquery',
-    //   'react', 'react-dom', 'react-addons-pure-render-mixin', 'react-addons-create-fragment',
-    //   'redux', 'react-redux', 'redux-thunk', 'redux-undo',
-    //   'react-router', 'history', 'react-router-redux'
-    // ]
+    frameworks: [
+      'react', 'react-dom', 'react-addons-pure-render-mixin', // react stuff
+      'redux', 'react-redux', 'redux-thunk', // redux stuff
+      'react-router', 'history', 'react-router-redux' // router stuff
+    ]
   },
   output: {
     // path: relative to cwd(current working directory), not work with path.resolve(__dirname, xxxx)
@@ -43,9 +42,6 @@ const config = {
     extensions: ['', '.js', '.jsx'],
     alias: {
     }
-  },
-  externals:{
-    "XLSX": "xlsx"
   },
   plugins: [
     new webpack.DefinePlugin({
