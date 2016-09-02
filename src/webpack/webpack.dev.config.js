@@ -27,6 +27,10 @@ module.exports = function(cwd, project) {
       port: 8050,
       contentBase: "src"
     },
+    output: {
+      // 如果webpack-server的端口与app-server的端口不一样，hmr会使用这个路径作为前缀，加载热补丁
+      publicPath: `${project.staticUrl}/`
+    },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       // new webpack.DllReferencePlugin({
