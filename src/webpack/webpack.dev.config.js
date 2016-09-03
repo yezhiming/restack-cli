@@ -35,7 +35,7 @@ module.exports = function(cwd, project) {
       new webpack.HotModuleReplacementPlugin(),
       // new webpack.DllReferencePlugin({
       //   context: '.',
-      //   manifest: require(`${cwd}/static-dist/vendors-manifest.json`),
+      //   manifest: require(`../../dll/vendors-manifest.json`),
       // })
     ]
   })
