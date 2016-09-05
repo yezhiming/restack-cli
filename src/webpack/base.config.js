@@ -9,10 +9,11 @@ var HappyPack = require('happypack');
 
 const config = {
   entry: {
-    frameworks: [
+    vendors: [
       'react', 'react-dom', 'react-addons-pure-render-mixin', // react stuff
       'redux', 'react-redux', 'redux-thunk', // redux stuff
-      'react-router', 'history', 'react-router-redux' // router stuff
+      'react-router', 'history', 'react-router-redux', // router stuff
+      'lodash', 'moment', 'jquery'
     ]
   },
   output: {
