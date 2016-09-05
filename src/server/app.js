@@ -60,14 +60,14 @@ function loadReducers(cwd) {
  * @param server express instance
  * @param cwd project folder path
  */
-module.exports = function(server, cwd) {
+module.exports = function(server, cwd, env) {
 
   server.use('/lang', express.static(`${cwd}/static/lang`))
 
   const routes = require(`${cwd}/src/js/routes`).default
   const reducers = loadReducers(cwd)
   const i18nToolsRegistry = loadI18nToolsRegistry(cwd)
-  const config = require(`${cwd}/config/development`)
+  const config = require(`${cwd}/config/${env}`)
 
   server.use((req, res) => {
 

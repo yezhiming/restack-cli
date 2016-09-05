@@ -18,8 +18,11 @@ if (process.env.NODE_ENV == 'production' || program.env == 'production') {
   // dev mode
 }
 
-require('./app')(server, program.cwd)
+// webpack
+require('./webpack-middleware')(server, program.cwd, program.env)
 
+// app
+require('./app')(server, program.cwd, program.env)
 
 // default port 3000
 var port = process.env.PORT || 3000;

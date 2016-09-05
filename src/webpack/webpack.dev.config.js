@@ -33,7 +33,7 @@ module.exports = function(cwd, project) {
     },
     resolve: {
       alias: {
-        config: `${cwd}/config/development`
+        config: `${cwd}/config/dev`
       }
     },
     plugins: [

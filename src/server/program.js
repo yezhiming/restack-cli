@@ -6,7 +6,7 @@ var cwd = process.cwd();
 
 program
   .option('-d, --debug', 'output extra information for debugging')
-  .option('-e, --env [env]', 'specify an environment', 'development')
+  .option('-e, --env [env]', 'specify an environment', 'dev')
   .action(function(project){
     // change cwd if argument provided
     cwd = project

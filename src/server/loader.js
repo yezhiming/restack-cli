@@ -19,5 +19,5 @@ var args = process.argv.slice(2).join(' ')
 
 require('./app-server');
 
-// express server instance with webpack-dev-middleware & webpack-hot-middleware
-require('./webpack-server');
+// standalone express server instance with webpack-dev-middleware & webpack-hot-middleware
+// require('./webpack-server');
