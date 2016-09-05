@@ -15,7 +15,7 @@ module.exports = function(cwd, project) {
   })
 
   return makeConfig({
-    devtool: "eval-source-map",
+    devtool: "source-map",
     //为每个entry增加hot load
     entry: entries,
     devServer: {
