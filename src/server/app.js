@@ -70,7 +70,7 @@ module.exports = function(server, cwd, env) {
   const config = require(`${cwd}/config/${env}`)
 
   // this middleware will intercept all requests, should always place at last
-  // if target app declare routes like "*", this middleware will stop requests from pass-through,
+  // if target app declare wildcard routes like "*", this middleware will stop requests from pass-through,
   // which may makes app-server go wrong
   server.use((req, res) => {
 
