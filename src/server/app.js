@@ -69,6 +69,9 @@ module.exports = function(server, cwd, env) {
   const i18nToolsRegistry = loadI18nToolsRegistry(cwd)
   const config = require(`${cwd}/config/${env}`)
 
+  // this middleware will intercept all requests, should always place at last
+  // if target app declare routes like "*", this middleware will stop requests from pass-through,
+  // which may makes app-server go wrong
   server.use((req, res) => {
 
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
