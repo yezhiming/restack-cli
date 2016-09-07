@@ -3,7 +3,7 @@ require('babel-polyfill');
 
 // app-server handles "react server rendering"
 // run app-server with nodemon
-var nodemon = require('nodemon');
+// var nodemon = require('nodemon');
 
 var args = process.argv.slice(2).join(' ')
 
