@@ -5,7 +5,7 @@ require('babel-polyfill');
 // run app-server with nodemon
 // var nodemon = require('nodemon');
 
-var args = process.argv.slice(2).join(' ')
+// var args = process.argv.slice(2).join(' ')
 
 // nodemon(`-e "js json" ${__dirname}/app-server.js ${args}`)
 //
