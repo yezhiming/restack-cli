@@ -13,14 +13,6 @@ import { RouterContext, match }   from 'react-router';
 
 import {i18n, configureStore}     from 'restack-core'
 
-// css modules require hook
-var hook = require("css-modules-require-hook")
-const lessParser = require('postcss-less').parse;
-hook({
-  extensions: ['.less','.css'],
-  processorOpts: {parser: lessParser},
-});
-
 
 function loadI18nToolsRegistry(cwd) {
 
@@ -39,7 +31,8 @@ function loadI18nToolsRegistry(cwd) {
 
 }
 
-function loadReducers(cwd) {
+function loadReducers(cwd, env) {
+
   var reducers = traverse.listSync(`${cwd}/src/js/reducers`)
   .filter(each => {
     return each.endsWith('.js')
@@ -65,26 +58,24 @@ module.exports = function(server, cwd, env) {
   server.use('/lang', express.static(`${cwd}/static/lang`))
 
   const routes = require(`${cwd}/src/js/routes`).default
-  const reducers = loadReducers(cwd)
+  const reducers = loadReducers(cwd, env)
   const i18nToolsRegistry = loadI18nToolsRegistry(cwd)
   const config = require(`${cwd}/config/${env}`)
 
   // this middleware will intercept all requests, should always place at last
   // if target app declare wildcard routes like "*", this middleware will stop requests from pass-through,
   // which may makes app-server go wrong
-  server.use((req, res) => {
+  server.use((req, res, next) => {
 
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
 
-      console.log(`match: ${req.url}, error: ${error}, redirect: ${redirectLocation}, render: ${!!renderProps}`)
+      console.log(`[Restack server rendering]: ${req.url}, error: ${error}, redirect: ${redirectLocation}, render: ${!!renderProps}`)
 
       if (error) {
         res.status(500).send(error.message)
       } else if (redirectLocation) {
         res.redirect(302, redirectLocation.pathname + redirectLocation.search)
-      } else if (!renderProps) {
-        res.status(404).send('Not found')
-      } else {
+      } else if (renderProps) {
 
         const store = configureStore(reducers);
         const i18nTools = i18nToolsRegistry['zh-cn'];
@@ -104,6 +95,9 @@ module.exports = function(server, cwd, env) {
         })
         res.type('html')
         res.end(html)
+
+      } else {
+        next()
       }
     })
 

@@ -18,6 +18,18 @@ if (process.env.NODE_ENV == 'production' || program.env == 'production') {
   // dev mode
 }
 
+// css modules require hook
+var hook = require("css-modules-require-hook")
+const lessParser = require('postcss-less').parse;
+hook({
+  extensions: ['.less','.css'],
+  processorOpts: {parser: lessParser},
+});
+
+// config alias hook
+var aliasHook = require("./config-alias-hook")
+aliasHook(program.cwd, program.env);
+
 // webpack
 require('./webpack-middleware')(server, program.cwd, program.env)
 
