@@ -2,10 +2,12 @@
 var fs =require('fs');
 var path = require('path');
 var traverse = require('fs-tree-traverse');
-var program = require('./program');
-const cwd = program.cwd;
 var rimraf = require('rimraf');
 const execSync = require('child_process').execSync;
+
+var program = require('../lib/server/program');
+const cwd = program.cwd;
+const env = program.env;
 
 // compile sources
 console.log(`compile sources...`)
@@ -36,10 +38,10 @@ execSync(`
   --output="${cwd}/lang/messages.pot"
 `)
 
-var languages = require(`${cwd}/project`).languages;
-console.log(`languages: ${languages.join(',')}`)
+var locales = require(`${cwd}/config/${env}.js`).locales;
+console.log(`locales: ${locales.join(',')}`)
 
-languages.forEach(function(lang){
+locales.forEach(function(lang){
   // make sure po file exists
   execSync(`touch ${cwd}/lang/${lang}.po`)
   // merge
