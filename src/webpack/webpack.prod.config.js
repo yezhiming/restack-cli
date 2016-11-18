@@ -9,6 +9,12 @@ module.exports = makeConfig({
     path: './static-dist',
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env": {
+        BROWSER: JSON.stringify(true),
+        NODE_ENV: JSON.stringify( process.env.NODE_ENV || 'production' )
+      }
+    }),
     new webpack.optimize.UglifyJsPlugin()
   ]
 })
