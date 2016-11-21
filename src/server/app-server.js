@@ -1,6 +1,3 @@
-require('babel-core/register');
-require('babel-polyfill');
-
 var program = require('./program');
 var express = require('express');
 var cookieParser = require('cookie-parser');
@@ -33,8 +30,10 @@ aliasHook(program.cwd, program.env);
 // webpack
 require('./webpack-middleware')(server, program.cwd, program.env)
 
+// require('./proxy-middleware')(server)
 // app
 require('./app')(server, program.cwd, program.env)
+
 
 // default port 3000
 var port = process.env.PORT || 3000;

@@ -11,21 +11,20 @@ import ReactDOM                   from 'react-dom/server';
 import { Provider }               from 'react-redux';
 import { RouterContext, match }   from 'react-router';
 
-import {i18n, configureStore}     from 'restack-core'
-
+import { createApp } from 'restack-core'
 
 function loadI18nToolsRegistry(cwd) {
 
   try {
-    return fs.readdirSync(`${cwd}/static/lang`)
+    return fs.readdirSync(`${cwd}/public/lang`)
     .reduce((all, each) => {
       var lang = each.replace('.json', '')
-      all[lang] = new i18n.Tools({ localeData: require(`${cwd}/static/lang/${each}`), locale: lang })
+      all[lang] = new i18n.Tools({ localeData: require(`${cwd}/public/lang/${each}`), locale: lang })
       return all
     }, {})
   } catch(e) {
     return {
-      "zh-cn": {}
+      "zh-CN": {}
     }
   }
 
@@ -55,8 +54,9 @@ function loadReducers(cwd, env) {
  */
 module.exports = function(server, cwd, env) {
 
-  server.use('/lang', express.static(`${cwd}/static/lang`))
+  server.use('/static', express.static(`${cwd}/public`))
 
+  // 运行时的require，只会使用原始的node require，babel不生效
   const routes = require(`${cwd}/src/js/routes`).default
   const reducers = loadReducers(cwd, env)
   const i18nToolsRegistry = loadI18nToolsRegistry(cwd)
@@ -77,16 +77,20 @@ module.exports = function(server, cwd, env) {
         res.redirect(302, redirectLocation.pathname + redirectLocation.search)
       } else if (renderProps) {
 
-        const store = configureStore(reducers);
-        const i18nTools = i18nToolsRegistry['zh-cn'];
+        let componentHTML = "";
 
-        const componentHTML = config.isomorphic ? ReactDOM.renderToString(
-          <Provider store={store}>
-            <i18n.Provider i18n={i18nTools}>
-              <RouterContext {...renderProps}/>
-            </i18n.Provider>
-          </Provider>
-        ) : "";
+        if (config.universal) {
+          const store = configureStore(reducers);
+          const i18nTools = i18nToolsRegistry['zh-CN'];
+
+          componentHTML = ReactDOM.renderToString(
+            <Provider store={store}>
+              <i18n.Provider i18n={i18nTools}>
+                <RouterContext {...renderProps}/>
+              </i18n.Provider>
+            </Provider>
+          );
+        }
 
         // render
         const html = require('./renderHTML').default({

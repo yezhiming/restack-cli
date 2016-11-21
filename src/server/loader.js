@@ -1,3 +1,18 @@
+// default babel config
+let babelrc = {
+  "presets": [
+    "es2015",
+    "stage-1",
+    "react"
+  ],
+  "plugins": [
+    "transform-runtime"
+  ]
+}
+
+babelrc.presets = babelrc.presets.map( p => require(`babel-preset-${p}`) )
+babelrc.plugins = babelrc.plugins.map( p => require(`babel-plugin-${p}`) )
+
 require('babel-core/register');
 require('babel-polyfill');
 

@@ -11,7 +11,7 @@ const config = {
   entry: {
     vendors: [
       'react', 'react-dom', // react stuff
-      'redux', 'react-redux', 'redux-thunk', // redux stuff
+      'redux', 'react-redux', // redux stuff
       'react-router', 'history', 'react-router-redux', // router stuff
       'lodash', 'moment'
     ]
@@ -25,7 +25,28 @@ const config = {
   module: {
     loaders: [
       {test: /\.json$/, loader: 'json'},
-      {test: /\.jsx?$/, loader: 'babel-loader', query: {presets: ["react-hmre"]}, exclude: /(node_modules|bower_components)/, happy: { id: 'jsx' }},
+      {
+        test: /\.jsx?$/, loader: 'babel-loader', exclude: /(node_modules|bower_components)/,
+        happy: { id: 'jsx' },
+        query: {
+          "presets": [
+            "es2015",
+            "react"
+          ],
+          "plugins": [
+            "transform-export-extensions",
+            "transform-class-properties",
+            "transform-object-rest-spread",
+            "transform-async-to-generator",
+            "transform-runtime"
+          ],
+          "env": {
+            "development": {
+              "presets": ["react-hmre"]
+            }
+          }
+        }
+      },
       // {test: /\.less$/, loader: 'style!css!less-loader'}, //使用less简写可能会出现问题
       // {test: /\.css$/, loader: 'style!css'},
       {test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")},

@@ -8,6 +8,11 @@ module.exports = makeConfig({
   output: {
     path: './static-dist',
   },
+  resolve: {
+    alias: {
+      config: `${cwd}/config/production`
+    }
+  },
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {

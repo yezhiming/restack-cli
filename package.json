@@ -1,13 +1,13 @@
 {
-  "name": "restack-cli",
+  "name": "restackjs-cli",
   "description": "cli tools for restack",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "bin": {
     "restack": "./bin/restack"
   },
   "scripts": {
     "compile": "babel -d lib/ src/",
-    "prepublish": "npm run compile"
+    "dll": "webpack --config ./lib/webpack/webpack.dll.config.js"
   },
   "dependencies": {
     "babel-cli": "^6.11.4",
@@ -26,6 +26,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-1": "^6.5.0",
     "bowser": "^1.4.3",
+    "classnames": "^2.2.5",
     "commander": "^2.9.0",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.23.1",
@@ -35,19 +36,22 @@
     "file-loader": "^0.9.0",
     "fs-tree-traverse": "^0.1.0",
     "happypack": "^2.1.1",
+    "http-proxy-middleware": "^0.17.1",
     "jed": "^1.1.1",
+    "jquery": "^3.1.0",
     "lodash": "^4.14.1",
     "moment": "^2.14.1",
+    "node-hook": "^0.4.0",
     "nodemon": "^1.10.0",
     "po2json": "^0.4.2",
     "postcss-less": "^0.14.0",
     "react": "^15.3.0",
-    "react-addons-pure-render-mixin": "^15.3.1",
+    "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "redux": "^3.5.2",
-    "restack-core": "0.0.3",
+    "restack-core": "^0.3.3",
     "rimraf": "^2.5.4",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
