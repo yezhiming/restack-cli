@@ -12,6 +12,7 @@ import { Provider }               from 'react-redux';
 import { RouterContext, match }   from 'react-router';
 
 import { createApp } from 'restack-core'
+import { Tools, Provider as I18nProvider } from 'restack-core/lib/plugins/i18n-plugin'
 
 function loadI18nToolsRegistry(cwd) {
 
@@ -19,10 +20,11 @@ function loadI18nToolsRegistry(cwd) {
     return fs.readdirSync(`${cwd}/public/lang`)
     .reduce((all, each) => {
       var lang = each.replace('.json', '')
-      all[lang] = new i18n.Tools({ localeData: require(`${cwd}/public/lang/${each}`), locale: lang })
+      all[lang] = new Tools({ localeData: require(`${cwd}/public/lang/${each}`), locale: lang })
       return all
     }, {})
   } catch(e) {
+    console.error(e)
     return {
       "zh-CN": {}
     }
@@ -85,9 +87,9 @@ module.exports = function(server, cwd, env) {
 
           componentHTML = ReactDOM.renderToString(
             <Provider store={store}>
-              <i18n.Provider i18n={i18nTools}>
+              <I18nProvider i18n={i18nTools}>
                 <RouterContext {...renderProps}/>
-              </i18n.Provider>
+              </I18nProvider>
             </Provider>
           );
         }
