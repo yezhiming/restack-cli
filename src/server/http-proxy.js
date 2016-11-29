@@ -18,8 +18,9 @@ module.exports = function(app, cwd, env) {
 
   try {
     const extraConfig = fs.readFileSync(path.join(cwd, 'package.json'), {encoding: 'utf8'})
-    config = Object.assign(config, JSON.parse(extraConfig.httpproxy))
+    config = Object.assign(config, JSON.parse(extraConfig).httpproxy)
   } catch (e) {
+    console.error(e)
     console.error(`package.json not exists`)
   }
 
