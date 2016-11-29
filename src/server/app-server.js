@@ -30,7 +30,7 @@ aliasHook(program.cwd, program.env);
 // webpack
 require('./webpack-middleware')(server, program.cwd, program.env)
 
-// require('./proxy-middleware')(server)
+require('./proxy-middleware')(server, program.cwd, program.env)
 // app
 require('./app')(server, program.cwd, program.env)
 
